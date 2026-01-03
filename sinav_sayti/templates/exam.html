@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sinaq</title>
+    <script>
+        var endTime = new Date("{{ end_time }}").getTime();
+        var x = setInterval(function() {
+            var now = new Date().getTime();
+            var distance = endTime - now;
+            if (distance < 0) {
+                clearInterval(x);
+                alert("Vaxt bitdi!");
+                window.location.href = "/";
+            }
+            var hours = Math.floor((distance % (1000*60*60*24)) / (1000*60*60));
+            var minutes = Math.floor((distance % (1000*60*60)) / (1000*60));
+            var seconds = Math.floor((distance % (1000*60)) / 1000);
+            document.getElementById("timer").innerHTML = hours + "h " + minutes + "m " + seconds + "s ";
+        }, 1000);
+    </script>
+</head>
+<body>
+    <h2>8-ci Sinif Sinaqi</h2>
+    <div id="timer"></div>
+    <form method="post">
+        {% for q in questions %}
+            <p>{{ loop.index }}. {{ q.question }}</p>
+            {% for opt in q.options %}
+                <input type="radio" name="q{{ loop.index }}" value="{{ opt }}" required> {{ opt }}<br>
+            {% endfor %}
+        {% endfor %}
+        <button type="submit">Cavablari Gonder</button>
+    </form>
+</body>
+</html>
